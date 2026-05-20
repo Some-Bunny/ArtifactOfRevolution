@@ -3,7 +3,7 @@ A simple Risk Of Rain 2 mod that adds a reworked version of the Artifact Of Evol
 
 ![](ArtifactOfRevolution/Previews/preview.webp)
 
-- - Gives enemies items. Enemy item loadout is changed every stage, and grows in power over time. Has a bunch of twists and surprises. Survivors Of The Void & Alloyed Collective are required for some config options to function.
+- Gives enemies items. Enemy item loadout is changed every stage, and grows in power over time. Has a bunch of twists and surprises. Survivors Of The Void & Alloyed Collective are required for some config options to function.
 
 - Submit bug reports here, please. :)
 
