@@ -11,6 +11,7 @@ using static RoR2.SpawnCard;
 using System.Linq;
 using RoR2.ContentManagement;
 using UnityEngine.ResourceManagement.AsyncOperations;
+
 namespace ArtifactOfRevolution
 {
     public class ArtifactOfRevolution
@@ -53,7 +54,10 @@ namespace ArtifactOfRevolution
 
             LegacyResourcesAPI.LoadAsyncCallback<GameObject>("Prefabs/NetworkedObjects/MonsterTeamGainsItemsArtifactInventory", delegate (GameObject operationResult)
             {
-                RevolutionItemController = operationResult;
+                var Op = operationResult;
+                RevolutionItemController = PrefabAPI.InstantiateClone(Op, "RevolutionInventory", false);
+                RevolutionItemController.GetComponent<EnemyInfoPanelInventoryProvider>().enabled = true;
+                PrefabAPI.RegisterNetworkPrefab(RevolutionItemController);
             });
 
             StartingItemCount = ArtifactOfRevolutionPlugin.configurationFile.Bind<int>($"{ArtifactName} | Base", "Baseline item Stack Count", 1, "The baseline amount of item stacks the enemies will recieve.");
@@ -140,7 +144,19 @@ namespace ArtifactOfRevolution
             };
 
 
+            RoR2.Run.onRunDestroyGlobal += Run_onRunDestroyGlobal;
+        }
 
+        private void Run_onRunDestroyGlobal(Run obj)
+        {
+            if (!NetworkServer.active) return;
+            ArtifactOfRevolution.treasureRng.ResetSeed(0UL);
+            RevolutionItemInventory.CleanInventory();
+            if (RevolutionItemInventory)
+            {
+                NetworkServer.Destroy(RevolutionItemInventory.gameObject);
+            }
+            RevolutionItemInventory = null;
         }
 
         public static ConfigEntry<float> ItemsPerStage;
@@ -200,28 +216,23 @@ namespace ArtifactOfRevolution
                         ArtifactOfRevolution.treasureRng.ResetSeed(__instance.seed);
                         RevolutionItemInventory = UnityEngine.Object.Instantiate<GameObject>(RevolutionItemController).GetComponent<Inventory>();
                         RevolutionItemInventory.GetComponent<TeamFilter>().teamIndex = TeamIndex.Monster;
-                        RevolutionItemInventory.GetComponent<EnemyInfoPanelInventoryProvider>().enabled = true;
-                        RevolutionItemInventory.gameObject.SetActive(true);
                         NetworkServer.Spawn(RevolutionItemInventory.gameObject);
                         RerollNewInventory();
                     }
                 }
             }
         }
+        /*
         [HarmonyPatch(typeof(RoR2.Run), nameof(RoR2.Run.OnDestroy))]
         public class Run_OnDestroy
         {
             [HarmonyPostfix]
             public static void Postfix(Run __instance)
             {
-                ArtifactOfRevolution.treasureRng.ResetSeed(0UL);
-                if (RevolutionItemInventory)
-                {
-                    NetworkServer.Destroy(RevolutionItemInventory.gameObject);
-                }
-                RevolutionItemInventory = null;
+
             }
         }
+        */
 
         [HarmonyPatch(typeof(RoR2.SpawnCard), nameof(RoR2.SpawnCard.DoSpawn))]
         public class SpawnCard_DoSpawn

@@ -30,7 +30,7 @@
 		<PackageReference Include="BepInEx.Core" Version="5.4.21" />
 
 		<PackageReference Include="R2API.Items" Version="1.0.*" />
-		<PackageReference Include="R2API.Language" Version="1.0.*" />
+		<PackageReference Include="R2API.Language" Version="1.1.0" />
 
 		<PackageReference Include="UnityEngine.Modules" Version="2021.3.33" IncludeAssets="compile" />
 		<PackageReference Include="RiskOfRain2.GameLibs" Version="*-*" />
@@ -40,6 +40,12 @@
 
 	<ItemGroup>
 	  <Folder Include="Previews\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="R2API.Prefab">
+	    <HintPath>..\..\r2modmanLocal\RiskOfRain2\profiles\test\BepInEx\plugins\RiskofThunder-R2API_Prefab\R2API.Prefab\R2API.Prefab.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 </Project>
