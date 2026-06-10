@@ -1,6 +1,6 @@
 ﻿{
 	"name": "ArtifactOfRevolution",
-	"version_number": "1.0.1",
+	"version_number": "1.0.2",
 	"website_url": "https://github.com/Some-Bunny/ArtifactOfRevolution",
 	"description": "Adds an Artifact similar to Evolution, with some funky twists and surprises. Highly configurable.",
 	"dependencies": [

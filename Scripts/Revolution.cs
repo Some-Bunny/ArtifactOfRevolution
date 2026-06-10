@@ -151,9 +151,9 @@ namespace ArtifactOfRevolution
         {
             if (!NetworkServer.active) return;
             ArtifactOfRevolution.treasureRng.ResetSeed(0UL);
-            RevolutionItemInventory.CleanInventory();
             if (RevolutionItemInventory)
             {
+                RevolutionItemInventory.CleanInventory();
                 NetworkServer.Destroy(RevolutionItemInventory.gameObject);
             }
             RevolutionItemInventory = null;
